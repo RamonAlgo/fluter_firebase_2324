@@ -18,3 +18,13 @@ class MainApp extends StatelessWidget {
     );
   }
 }
+
+/*
+1) Tenir el Node.js instal·lat.
+2) mpm install -g firebase-tools
+3) Fer login a Firebase: firebase login
+    - Si dona error de l'arxiu firebase.ps1, canviar-li el nom (o esborrar-lo
+    i tornar a fer login).
+    - Si tornem a fer firebase login, ens diu en quin compte estem.
+    - Si vulguèssim canviar el compte, fem firebase logout.
+*/
