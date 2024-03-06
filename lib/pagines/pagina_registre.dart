@@ -2,20 +2,29 @@ import 'package:fluter_firebase_2324/components/boto_auth.dart';
 import 'package:fluter_firebase_2324/components/textfield_auth.dart';
 import 'package:flutter/material.dart';
 
-class PaginaRegistre extends StatelessWidget {
+class PaginaRegistre extends StatefulWidget {
+
+  final void Function() alFerClic;
+
+  const PaginaRegistre({
+    super.key, 
+    required this.alFerClic,
+  });
+
+  @override
+  State<PaginaRegistre> createState() => _PaginaRegistreState();
+}
+
+class _PaginaRegistreState extends State<PaginaRegistre> {
 
   final TextEditingController controllerEmail = TextEditingController();
   final TextEditingController controllerPassword = TextEditingController();
   final TextEditingController controllerConfirmarPassword = TextEditingController();
 
-  PaginaRegistre({
-    super.key,
-    });
-
-
   void ferRegistre() {
 
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,52 +36,51 @@ class PaginaRegistre extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-              
+          
                   // Logo.
                   const Icon(
                     Icons.fireplace,
                     size: 120,
                     color: Color.fromARGB(255, 255, 240, 218),
                   ),
-                  
-                  const SizedBox(height: 10,),
             
-                  // Frase
+                  const SizedBox(height: 25,),
               
+                  // Frase.
                   const Text(
-                    "Crear un conte nou",
+                    "Crea un compte nou",
                     style: TextStyle(
                       color: Color.fromARGB(255, 255, 240, 218),
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      
                     ),
                   ),
-              
-                  // Text divisori
             
-                  const SizedBox(height: 10,),
+                  const SizedBox(height: 25,),
             
+                  // Text divisori.
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 25,),
                     child: Row(
                       children: [
                         Expanded(
                           child: Divider(
-                            thickness: 3,
+                            thickness: 1,
                             color: Color.fromARGB(255, 255, 240, 218),
                           ),
                         ),
+                    
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 4),
+                          padding: EdgeInsets.symmetric(horizontal: 4,),
                           child: Text(
-                            "Registrat",
+                            "Registra't",
                             style: TextStyle(color: Color.fromARGB(255, 255, 240, 218),),
                           ),
                         ),
+                    
                         Expanded(
                           child: Divider(
-                            thickness: 3,
+                            thickness: 1,
                             color: Color.fromARGB(255, 255, 240, 218),
                           ),
                         ),
@@ -80,39 +88,41 @@ class PaginaRegistre extends StatelessWidget {
                     ),
                   ),
             
+                  const SizedBox(height: 10,),
+              
                   // TextField Email.
-              
                   TextFieldAuth(
-                    controller: controllerEmail,
-                    hintText: "Email",
-                    obscureText: false, 
+                    controller: controllerEmail, 
+                    hintText: "Email", 
+                    obscureText: false,
                   ),
             
-                  // TextField Password
+                  const SizedBox(height: 10,),
               
+                  // TextField Password.
                   TextFieldAuth(
-                    controller: controllerPassword,
-                    hintText: "Password",
-                    obscureText: true, 
+                    controller: controllerPassword, 
+                    hintText: "Password", 
+                    obscureText: true,
                   ),
             
-                  
-            
-                  // No estàs registra/da
+                  const SizedBox(height: 10,),
+              
+                  // No estàs registrat/da?
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25),
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Text("Ja ets membre?"),
-                        SizedBox(width: 5,),
+                        const Text("Ja ets membre?"),
+                        const SizedBox(width: 5,),
                         GestureDetector(
-                          onTap: () {},
-                          child: Text(
+                          onTap: widget.alFerClic,
+                          child: const Text(
                             "Fes login",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Colors.blue,
+                              color: Color.fromARGB(255, 40, 71, 97),
                             ),
                           ),
                         ),
@@ -121,14 +131,12 @@ class PaginaRegistre extends StatelessWidget {
                   ),
             
                   const SizedBox(height: 10,),
-            
-                  // Boto login
+              
+                  // Botó Registra't.
                   BotoAuth(
-                    text: "Registre",
+                    text: "Registra't",
                     onTap: ferRegistre,
                   ),
-            
-                  
                 ],
               ),
             ),
