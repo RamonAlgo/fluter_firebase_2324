@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:html';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,9 +24,12 @@ class ServeiAuth {
 
     throw Exception(e);
   }
-
+}
 //Fer Registre
 
 //Fer logout
-  }
-  }
+
+  Future<void> tancarSessio() async{
+    return await _auth.signOut();
+  } 
+}
