@@ -1,6 +1,3 @@
-import 'dart:ffi';
-import 'dart:html';
-
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ServeiAuth {
@@ -9,7 +6,6 @@ class ServeiAuth {
 //Fer Login
 
   Future<UserCredential> loginAmbEmailIPassword(String email, password) async {
-    print(password);
 
     try{ 
       
@@ -19,13 +15,28 @@ class ServeiAuth {
         );
 
         return creadencialUsuari;
-   
   } on FirebaseAuthException catch (e){
 
     throw Exception(e);
   }
 }
 //Fer Registre
+
+Future<UserCredential> registreAmbEmailIPassword(String email, password) async {
+
+    try{ 
+      
+      UserCredential creadencialUsuari = await _auth.createUserWithEmailAndPassword(
+        email: email, 
+        password: password
+        );
+
+        return creadencialUsuari;
+  } on FirebaseAuthException catch (e){
+
+    throw Exception(e);
+  }
+}
 
 //Fer logout
 

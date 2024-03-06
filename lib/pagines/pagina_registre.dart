@@ -1,3 +1,4 @@
+import 'package:fluter_firebase_2324/auth/servei_auth.dart';
 import 'package:fluter_firebase_2324/components/boto_auth.dart';
 import 'package:fluter_firebase_2324/components/textfield_auth.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +22,25 @@ class _PaginaRegistreState extends State<PaginaRegistre> {
   final TextEditingController controllerPassword = TextEditingController();
   final TextEditingController controllerConfirmarPassword = TextEditingController();
 
-  void ferRegistre() {
+  void ferRegistre(BuildContext context) async {
+    
+    final serveiAuth = ServeiAuth();
 
+    try {
+      serveiAuth.registreAmbEmailIPassword(
+        controllerEmail.text,
+        controllerPassword.text
+      );
+
+    } catch (e) {
+      showDialog(
+        context: context, 
+        builder: (context) => AlertDialog(
+          title: const Text("Error"),
+          content: Text(e.toString()),
+        ),
+      );
+    }
   }
 
   @override
@@ -135,7 +153,7 @@ class _PaginaRegistreState extends State<PaginaRegistre> {
                   // Botó Registra't.
                   BotoAuth(
                     text: "Registra't",
-                    onTap: ferRegistre,
+                    onTap: () => ferRegistre(context),
                   ),
                 ],
               ),
