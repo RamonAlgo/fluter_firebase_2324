@@ -25,14 +25,11 @@ class _PaginaLoginState extends State<PaginaLogin> {
     final serveiAuth = ServeiAuth();
     //print(controllerPassword.text);
     try {
-      
       await serveiAuth.loginAmbEmailIPassword(
         controllerEmail.text,
         controllerPassword.text,
       );
-
     } catch (e) {
-      
       // ignore: use_build_context_synchronously
       showDialog(
         context: context,
