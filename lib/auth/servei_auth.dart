@@ -15,7 +15,10 @@ class ServeiAuth {
         password: password
         );
 
-        
+        _firestore.collection("Usuaris").doc(creadencialUsuari.user!.uid).set({
+          "uid": creadencialUsuari.user!.uid,
+          "email": email, 
+        });
 
         return creadencialUsuari;
   } on FirebaseAuthException catch (e){
@@ -46,5 +49,9 @@ Future<UserCredential> registreAmbEmailIPassword(String email, password) async {
 //Fer logout
   Future<void> tancarSessio() async{
     return await _auth.signOut();
-  } 
+  }
+
+  User?getUsuarisActual() {
+    return _auth.currentUser;
+  }  
 }

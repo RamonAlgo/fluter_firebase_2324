@@ -1,13 +1,19 @@
+import 'dart:js';
+
 import 'package:fluter_firebase_2324/auth/servei_auth.dart';
+import 'package:fluter_firebase_2324/chat/servei_chart.dart';
 import 'package:flutter/material.dart';
 
 class PaginaInici extends StatelessWidget {
-  const PaginaInici({super.key});
+  PaginaInici({super.key});
+
+  final ServeiAuth _serveiAuth = ServeiAuth();
+  final Serveichat _serveiChat = Serveichat();
+
 
   void logout() {
-    final serveiAuth = ServeiAuth();
-
-    serveiAuth.tancarSessio();
+    
+    _serveiAuth.tancarSessio();
   }
 
   @override
@@ -22,6 +28,40 @@ class PaginaInici extends StatelessWidget {
           ),
         ],
       ),
+      body: _construeixLlistaUsuaris(),
     );
+  }
+  Widget _construeixLlistaUsuaris(){
+    
+    return StreamBuilder(
+      stream: _serveiChat.getUsuaris(), 
+      builder: (context, snapshot) {
+        
+        // mirar si hi ha error.
+        if (snapshot.hasError) {
+          
+          return const Text("Error");
+        }
+        
+        // esperem que es carreguin les dades.
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          
+          return const Text("Carregant dades..");
+        }
+        // es retornen les dades.
+         return ListView(
+          children: snapshot.data!.map<Widget>(
+            (dadesUsuari) => _construeixItemUsuari(dadesUsuari, context)
+          ).toList(),
+         );
+      }
+    );
+  }
+  Widget _construeixItemUsuari(Map<String, dynamic> dadesUsuari, BuildContext context) {
+
+    if (dadesUsuari["email"] == _serveiAuth.getUsuarisActual()!.email) {
+      return Container();
+    }
+    return Text(dadesUsuari["email"]);    
   }
 }
