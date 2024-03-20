@@ -2,6 +2,8 @@ import 'dart:js';
 
 import 'package:fluter_firebase_2324/auth/servei_auth.dart';
 import 'package:fluter_firebase_2324/chat/servei_chart.dart';
+import 'package:fluter_firebase_2324/components/item_usuari.dart';
+import 'package:fluter_firebase_2324/pagines/pagina_chat.dart';
 import 'package:flutter/material.dart';
 
 class PaginaInici extends StatelessWidget {
@@ -62,6 +64,16 @@ class PaginaInici extends StatelessWidget {
     if (dadesUsuari["email"] == _serveiAuth.getUsuarisActual()!.email) {
       return Container();
     }
-    return Text(dadesUsuari["email"]);    
+    return ItemUsuari(
+      emailUsuari: dadesUsuari["email"],
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PaginaChat(), 
+          )
+        );
+      },
+    );    
   }
 }
