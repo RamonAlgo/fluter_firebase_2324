@@ -1,7 +1,7 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Missatge {
-  
 
   final String idAutor;
   final String emailAutor;

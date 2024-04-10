@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 class ItemUsuari extends StatelessWidget {
@@ -8,8 +9,8 @@ class ItemUsuari extends StatelessWidget {
   const ItemUsuari({
     super.key,
     required this.emailUsuari,
-    required this.onTap
-    });
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class ItemUsuari extends StatelessWidget {
           color: Colors.amber,
           borderRadius: BorderRadius.circular(12),
         ),
-        margin: const EdgeInsetsDirectional.symmetric(
+        margin: const EdgeInsets.symmetric(
           vertical: 5,
           horizontal: 25,
         ),

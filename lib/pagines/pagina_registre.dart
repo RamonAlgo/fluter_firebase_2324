@@ -23,16 +23,18 @@ class _PaginaRegistreState extends State<PaginaRegistre> {
   final TextEditingController controllerConfirmarPassword = TextEditingController();
 
   void ferRegistre(BuildContext context) async {
-    
+
     final serveiAuth = ServeiAuth();
 
     try {
+
       serveiAuth.registreAmbEmailIPassword(
-        controllerEmail.text,
-        controllerPassword.text
+        controllerEmail.text, 
+        controllerPassword.text,
       );
 
     } catch (e) {
+
       showDialog(
         context: context, 
         builder: (context) => AlertDialog(

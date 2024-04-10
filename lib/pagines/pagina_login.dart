@@ -22,19 +22,23 @@ class _PaginaLoginState extends State<PaginaLogin> {
   final TextEditingController controllerPassword = TextEditingController();
 
   void ferLogin(BuildContext context) async {
+    
     final serveiAuth = ServeiAuth();
-    //print(controllerPassword.text);
+
     try {
+
       await serveiAuth.loginAmbEmailIPassword(
-        controllerEmail.text,
+        controllerEmail.text, 
         controllerPassword.text,
       );
+
     } catch (e) {
+
       // ignore: use_build_context_synchronously
       showDialog(
-        context: context,
+        context: context, 
         builder: (context) => AlertDialog(
-          title: Text("Error"),
+          title: const Text("Error"),
           content: Text(e.toString()),
         ),
       );
@@ -152,7 +156,6 @@ class _PaginaLoginState extends State<PaginaLogin> {
                   // Botó Login.
                   BotoAuth(
                     text: "Login",
-
                     onTap: () => ferLogin(context),
                   ),
                 ],

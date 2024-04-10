@@ -1,8 +1,6 @@
-
 import 'package:fluter_firebase_2324/pagines/pagina_login.dart';
 import 'package:fluter_firebase_2324/pagines/pagina_registre.dart';
 import 'package:flutter/material.dart';
-
 
 class LoginORegistre extends StatefulWidget {
   const LoginORegistre({super.key});

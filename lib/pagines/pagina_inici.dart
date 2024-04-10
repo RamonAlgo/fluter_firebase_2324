@@ -1,8 +1,7 @@
-import 'dart:js';
-
 import 'package:fluter_firebase_2324/auth/servei_auth.dart';
 import 'package:fluter_firebase_2324/chat/servei_chart.dart';
 import 'package:fluter_firebase_2324/components/item_usuari.dart';
+import 'package:fluter_firebase_2324/pagines/editar_dades_usuari.dart';
 import 'package:fluter_firebase_2324/pagines/pagina_chat.dart';
 import 'package:flutter/material.dart';
 
@@ -10,14 +9,14 @@ class PaginaInici extends StatelessWidget {
   PaginaInici({super.key});
 
   final ServeiAuth _serveiAuth = ServeiAuth();
-  final Serveichat _serveiChat = Serveichat();
-
+  final ServeiChat _serveiChat = ServeiChat();
 
   void logout() {
-    
+    //final serveiAuth = ServeiAuth();
+
     _serveiAuth.tancarSessio();
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +24,14 @@ class PaginaInici extends StatelessWidget {
         title: Text("Pàgina inici"),
         actions: [
           IconButton(
-            onPressed: logout,
+            onPressed: (){
+              Navigator(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const EditarDadesUsuari()
+                )
+              );
+            }, 
             icon: Icon(Icons.logout),
           ),
         ],
@@ -33,49 +39,54 @@ class PaginaInici extends StatelessWidget {
       body: _construeixLlistaUsuaris(),
     );
   }
-  Widget _construeixLlistaUsuaris(){
-    
+
+  Widget _construeixLlistaUsuaris() {
+
     return StreamBuilder(
       stream: _serveiChat.getUsuaris(), 
       builder: (context, snapshot) {
-        
-        // mirar si hi ha error.
+
+        // Mirar si hi ha errror.
         if (snapshot.hasError) {
-          
+
           return const Text("Error");
         }
-        
-        // esperem que es carreguin les dades.
+
+        // Esperem que es carreguin les dades.
         if (snapshot.connectionState == ConnectionState.waiting) {
-          
-          return const Text("Carregant dades..");
+
+          return const Text("Carregant dades...");
         }
-        // es retornen les dades.
-         return ListView(
+
+        // Es retornen les dades.
+        return ListView(
           children: snapshot.data!.map<Widget>(
             (dadesUsuari) => _construeixItemUsuari(dadesUsuari, context)
           ).toList(),
-         );
-      }
+        );
+      },
     );
   }
+
   Widget _construeixItemUsuari(Map<String, dynamic> dadesUsuari, BuildContext context) {
 
-    if (dadesUsuari["email"] == _serveiAuth.getUsuarisActual()!.email) {
+    if (dadesUsuari["email"] == _serveiAuth.getUsuariActual()!.email) {
+
       return Container();
     }
     return ItemUsuari(
       emailUsuari: dadesUsuari["email"],
       onTap: (){
         Navigator.push(
-          context,
+          context, 
           MaterialPageRoute(
             builder: (context) => PaginaChat(
               emailAmbQuiParlem: dadesUsuari["email"],
-              ), 
-          )
+              idReceptor: dadesUsuari["uid"],
+            ),
+          ),
         );
       },
-    );
+    );//Text(dadesUsuari["email"]);
   }
 }
