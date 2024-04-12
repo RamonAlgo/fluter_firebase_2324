@@ -21,17 +21,11 @@ class PaginaInici extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Pàgina inici"),
+        title: const Text("Pàgina inici"),
         actions: [
+          IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => EditarDadesUsuari()));}, icon: Icon(Icons.person)),
           IconButton(
-            onPressed: (){
-              Navigator(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const EditarDadesUsuari()
-                )
-              );
-            }, 
+            onPressed: logout, 
             icon: Icon(Icons.logout),
           ),
         ],

@@ -64,7 +64,7 @@ Future<void> _triaImatge() async {
             // Boto per obtenir el FilePicker.
             //================================
             GestureDetector(
-              onTap: _triaImatge(){},
+              onTap: _triaImatge,
               child: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
@@ -77,7 +77,9 @@ Future<void> _triaImatge() async {
             // Boto per pujar la imatge 
             //===================================
             GestureDetector(
-              onTap: (){},
+              onTap: () async {
+                
+              },
               child: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
@@ -85,8 +87,18 @@ Future<void> _triaImatge() async {
                 ),
                 child: const Text("Pujar imatge"),
               ),
-            )
+            ),
 
+
+            // Visor del resultat del FilePicker
+            // =================================
+            Container(
+              child: _imatgeSeleccionadaWeb == null && _imatgeSeleccionadaApp == null ?
+              Container() : 
+              kIsWeb ?
+              Image.memory(_imatgeSeleccionadaWeb!, fit: BoxFit.fill,) :
+              Image.file(_imatgeSeleccionadaApp!, fit: BoxFit.fill,),
+            )
 
           ],
         ),
