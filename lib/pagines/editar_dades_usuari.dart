@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:fluter_firebase_2324/auth/servei_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -47,6 +49,64 @@ Future<void> _triaImatge() async {
 
 }
 
+  Future<bool> pujarImargePerUsuari() async {
+
+    String idUsuari = ServeiAuth().getUsuariActual()!.uid;
+
+
+    Reference ref = FirebaseStorage.instance.ref().child("$idUsuari/avatar/$idUsuari");
+
+    // Agafem la imatge de la variable que la tingui (la de web o la de App).
+    if (_imatgeSeleccionadaApp != null) {
+      
+      try {
+        await ref.putFile(_imatgeSeleccionadaApp!);
+        return true;
+      } catch (e) { return false; }
+      
+    }
+
+    if (_imatgeSeleccionadaWeb != null) {
+      
+      try {
+        await ref.putData(_imatgeSeleccionadaWeb!);
+        return true;
+      } catch (e) { return false; }
+    }
+
+    return false;
+  }
+
+
+  Future<String> getImatgePerfil() async{
+
+    final String idUsuari = ServeiAuth().getUsuariActual()!.uid;
+    final Reference ref = FirebaseStorage.instance.ref().child("$idUsuari/avatar/$idUsuari");
+
+    final String urlImatge = await ref.getDownloadURL();
+
+    return urlImatge;  
+  }
+
+
+  Widget mostrarImatge() {
+    return FutureBuilder(
+      future: getImatgePerfil(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting || snapshot.hasError) {
+
+          return const Icon(Icons.person);          
+        }
+        return Image.network(
+          snapshot.data!,
+          errorBuilder: (context, error, StackTrace) {
+            return Text("Error al carregar la imatge: $error");
+          },
+          );
+      },
+    );
+  }
+
 
 
   @override
@@ -78,7 +138,15 @@ Future<void> _triaImatge() async {
             //===================================
             GestureDetector(
               onTap: () async {
-                
+
+                if (_imatgeAPuntPerPujar) {
+                  
+                  bool imatgePujadaCorrectament = await pujarImargePerUsuari();
+
+                  if (imatgePujadaCorrectament) {
+                    mostrarImatge();
+                  }
+                }
               },
               child: Container(
                 padding: const EdgeInsets.all(10),
@@ -98,8 +166,12 @@ Future<void> _triaImatge() async {
               kIsWeb ?
               Image.memory(_imatgeSeleccionadaWeb!, fit: BoxFit.fill,) :
               Image.file(_imatgeSeleccionadaApp!, fit: BoxFit.fill,),
-            )
+            ),
 
+            // Visor del resultat de carregar la imatge de Firebase Storage.
+            Container(
+              child: mostrarImatge(),
+            ),
           ],
         ),
       )),
