@@ -30,6 +30,20 @@ class _PaginaChatState extends State<PaginaChat> {
   // Variable pel teclat d'un mòbil.
   final FocusNode focusNode = FocusNode();
 
+  String formatMessageDateTime(Timestamp timestamp) {
+    DateTime messageTime = timestamp.toDate();
+    DateTime now = DateTime.now();
+    DateTime today = DateTime(now.year, now.month, now.day);
+    DateTime messageDate = DateTime(messageTime.year, messageTime.month, messageTime.day);
+
+    if (messageDate == today) {
+      return '${messageTime.hour.toString().padLeft(2, '0')}:${messageTime.minute.toString().padLeft(2, '0')}';
+    } else {
+      int differenceInDays = today.difference(messageDate).inDays;
+      return differenceInDays == 1 ? 'Fa 1 dia' : 'Fa $differenceInDays dies';
+    }
+  }
+
   @override
   void dispose() {
 
@@ -130,6 +144,9 @@ class _PaginaChatState extends State<PaginaChat> {
     );
   }
 
+
+
+
   Widget _construirItemMissatge(DocumentSnapshot documentSnapshot){
 
     // final data = document... (altra opció).
@@ -143,12 +160,31 @@ class _PaginaChatState extends State<PaginaChat> {
     // (Operador ternari).
     var aliniament = esUsuariActual ? Alignment.centerRight : Alignment.centerLeft;
     var colorBombolla = esUsuariActual ? Colors.green[200] : Colors.amber[200];
+
+    String horaOMissatge = formatMessageDateTime(data['timestamp']);
+
     return Container(
-      alignment: aliniament,
-      child: BombollaMissatge(
-        colorBombolla: colorBombolla??Colors.black,
-        missatge: data["missatge"],
-      ),
+    alignment: aliniament,
+    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+    child: Column(
+      crossAxisAlignment: esUsuariActual ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      children: <Widget>[
+        BombollaMissatge(
+          colorBombolla: colorBombolla ?? Colors.black,
+          missatge: data["missatge"],
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 2.0),
+          child: Text(
+            horaOMissatge,
+            style: TextStyle(
+              fontSize: 12.0,
+              color: Colors.grey[600]
+            ),
+          ),
+        ),
+      ],
+    ),
     );
   }
 
