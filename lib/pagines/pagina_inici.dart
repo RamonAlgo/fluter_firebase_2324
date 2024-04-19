@@ -63,24 +63,27 @@ class PaginaInici extends StatelessWidget {
   }
 
   Widget _construeixItemUsuari(Map<String, dynamic> dadesUsuari, BuildContext context) {
+  // Evitar mostrar el usuario actual en la lista
+  if (dadesUsuari["email"] == _serveiAuth.getUsuariActual()!.email) {
+    return Container();
+  }
 
-    if (dadesUsuari["email"] == _serveiAuth.getUsuariActual()!.email) {
+  // Utilizar el nombre si está disponible, de lo contrario usar el email
+  String displayName = dadesUsuari["nom"]?.isEmpty ?? true ? dadesUsuari["email"] : dadesUsuari["nom"];
 
-      return Container();
-    }
-    return ItemUsuari(
-      emailUsuari: dadesUsuari["email"],
-      onTap: (){
-        Navigator.push(
-          context, 
-          MaterialPageRoute(
-            builder: (context) => PaginaChat(
-              emailAmbQuiParlem: dadesUsuari["email"],
-              idReceptor: dadesUsuari["uid"],
-            ),
+  return ItemUsuari(
+    emailUsuari: displayName, // Mostrar nombre o email según lo que esté disponible
+    onTap: () {
+      Navigator.push(
+        context, 
+        MaterialPageRoute(
+          builder: (context) => PaginaChat(
+            emailAmbQuiParlem: dadesUsuari["nom"] != null && dadesUsuari["nom"].isNotEmpty ? dadesUsuari["nom"] : dadesUsuari["email"], // Envía el nombre si está disponible, de lo contrario el email
+            idReceptor: dadesUsuari["uid"],
           ),
-        );
-      },
-    );//Text(dadesUsuari["email"]);
+        ),
+      );
+    },
+  );
   }
 }

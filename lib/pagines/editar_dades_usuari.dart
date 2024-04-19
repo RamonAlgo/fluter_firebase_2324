@@ -15,9 +15,32 @@ class EditarDadesUsuari extends StatefulWidget {
 
 class _EditarDadesUsuariState extends State<EditarDadesUsuari> {
 
+  final TextEditingController _nomController = TextEditingController();
+  final ServeiAuth _serveiAuth = ServeiAuth();
+
   File? _imatgeSeleccionadaApp;
   Uint8List? _imatgeSeleccionadaWeb;
   bool _imatgeAPuntPerPujar = false;
+
+  @override
+  void dispose() {
+    _nomController.dispose();
+    super.dispose();
+  }
+
+  void _actualitzarNom() async {
+    String nouNom = _nomController.text.trim();
+    if (nouNom.isNotEmpty) {
+      await _serveiAuth.actualitzarNomUsuari(nouNom);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Nom actualitzat a $nouNom'),
+        duration: Duration(seconds: 2),
+      ));
+      // Limpiar el controlador después de actualizar
+      _nomController.clear();
+    }
+  }
+
 
 Future<void> _triaImatge() async {
 
@@ -120,7 +143,24 @@ Future<void> _triaImatge() async {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
+            // editar nom
+            Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: _nomController,
+                  decoration: InputDecoration(
+                    labelText: 'Nou nom',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  onPressed: _actualitzarNom,
+                  child: Text('Confirmar'),
+                ),
+              ),
             // Boto per obtenir el FilePicker.
             //================================
             GestureDetector(

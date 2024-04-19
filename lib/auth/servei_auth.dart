@@ -50,6 +50,19 @@ class ServeiAuth {
     
   }
 
+  Future<void> actualitzarNomUsuari(String nouNom) async {
+  User? usuari = _auth.currentUser;
+  if (usuari != null && nouNom.isNotEmpty) {
+    await usuari.updateDisplayName(nouNom);
+    await usuari.reload(); // Recargar la información del usuario para que los cambios tengan efecto inmediato
+
+    // Actualizar el nombre en Firestore
+    return _firestore.collection("Usuaris").doc(usuari.uid).update({
+      "nom": nouNom,
+    });
+  }
+}
+
   // Fer logout
   Future<void> tancarSessio() async {
     return await _auth.signOut();
